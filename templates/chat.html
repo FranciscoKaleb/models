@@ -1,0 +1,129 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="chat-wrapper">
+    <div class="chat-header">
+        <div class="chat-header-info">
+            <div class="chat-avatar">Q</div>
+            <div>
+                <div class="chat-title">Qwen Assistant</div>
+                <div class="chat-subtitle">Computer Parts Support</div>
+            </div>
+        </div>
+        <button class="clear-btn" onclick="clearChat()">Clear chat</button>
+    </div>
+
+    <div class="chat-messages" id="chatMessages">
+        <div class="message assistant">
+            <div class="message-avatar">Q</div>
+            <div class="message-bubble">Hi! I'm your computer parts assistant. Ask me anything about CPUs, GPUs, RAM, storage, and more.</div>
+        </div>
+    </div>
+
+    <div class="chat-input-area">
+        <div class="chat-input-wrapper">
+            <textarea
+                id="userInput"
+                class="chat-input"
+                placeholder="Ask about computer parts..."
+                rows="1"
+                onkeydown="handleKey(event)"
+                oninput="autoResize(this)"
+            ></textarea>
+            <button class="send-btn" id="sendBtn" onclick="sendMessage()">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+                    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function autoResize(el) {
+        el.style.height = 'auto';
+        el.style.height = Math.min(el.scrollHeight, 150) + 'px';
+    }
+
+    function handleKey(e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            sendMessage();
+        }
+    }
+
+    function appendMessage(role, text) {
+        const container = document.getElementById('chatMessages');
+        const div = document.createElement('div');
+        div.className = `message ${role}`;
+
+        if (role === 'assistant') {
+            div.innerHTML = `<div class="message-avatar">Q</div><div class="message-bubble">${escapeHtml(text)}</div>`;
+        } else {
+            div.innerHTML = `<div class="message-bubble">${escapeHtml(text)}</div>`;
+        }
+
+        container.appendChild(div);
+        container.scrollTop = container.scrollHeight;
+    }
+
+    function appendTypingIndicator() {
+        const container = document.getElementById('chatMessages');
+        const div = document.createElement('div');
+        div.className = 'message assistant';
+        div.id = 'typingIndicator';
+        div.innerHTML = `<div class="message-avatar">Q</div><div class="message-bubble typing"><span></span><span></span><span></span></div>`;
+        container.appendChild(div);
+        container.scrollTop = container.scrollHeight;
+    }
+
+    function removeTypingIndicator() {
+        const el = document.getElementById('typingIndicator');
+        if (el) el.remove();
+    }
+
+    function escapeHtml(text) {
+        return text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+    }
+
+    async function sendMessage() {
+        const input = document.getElementById('userInput');
+        const text = input.value.trim();
+        if (!text) return;
+
+        input.value = '';
+        input.style.height = 'auto';
+        document.getElementById('sendBtn').disabled = true;
+
+        appendMessage('user', text);
+        appendTypingIndicator();
+
+        try {
+            const res = await fetch('/api/chat', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({message: text})
+            });
+            const data = await res.json();
+            removeTypingIndicator();
+            appendMessage('assistant', data.reply || data.error);
+        } catch (err) {
+            removeTypingIndicator();
+            appendMessage('assistant', 'Something went wrong. Please try again.');
+        }
+
+        document.getElementById('sendBtn').disabled = false;
+        document.getElementById('userInput').focus();
+    }
+
+    async function clearChat() {
+        await fetch('/api/chat/clear', {method: 'POST'});
+        const container = document.getElementById('chatMessages');
+        container.innerHTML = `
+            <div class="message assistant">
+                <div class="message-avatar">Q</div>
+                <div class="message-bubble">Hi! I'm your computer parts assistant. Ask me anything about CPUs, GPUs, RAM, storage, and more.</div>
+            </div>`;
+    }
+</script>
+{% endblock %}
