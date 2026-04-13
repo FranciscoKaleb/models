@@ -27,3 +27,47 @@ Press CTRL+C to quit
 127.0.0.1 - - [12/Apr/2026 10:10:10] "GET / HTTP/1.1" 200 -
 127.0.0.1 - - [12/Apr/2026 10:10:15] "GET /chat HTTP/1.1" 200 -
 127.0.0.1 - - [12/Apr/2026 10:17:48] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [12/Apr/2026 10:21:53] "GET /chat HTTP/1.1" 200 -
+127.0.0.1 - - [12/Apr/2026 10:21:54] "GET /chat HTTP/1.1" 200 -
+127.0.0.1 - - [12/Apr/2026 10:22:06] "POST /api/chat HTTP/1.1" 200 -
+127.0.0.1 - - [12/Apr/2026 10:22:16] "POST /api/chat HTTP/1.1" 200 -
+127.0.0.1 - - [12/Apr/2026 10:28:28] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [12/Apr/2026 10:28:31] "GET /chat HTTP/1.1" 200 -
+127.0.0.1 - - [12/Apr/2026 10:29:02] "GET /chat HTTP/1.1" 200 -
+127.0.0.1 - - [12/Apr/2026 10:29:07] "GET /chat HTTP/1.1" 200 -
+127.0.0.1 - - [12/Apr/2026 10:29:07] "GET /about HTTP/1.1" 200 -
+127.0.0.1 - - [12/Apr/2026 10:29:09] "GET /help HTTP/1.1" 200 -
+127.0.0.1 - - [12/Apr/2026 10:29:09] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [12/Apr/2026 10:29:11] "GET /chat HTTP/1.1" 200 -
+127.0.0.1 - - [12/Apr/2026 10:31:10] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [12/Apr/2026 11:38:10] "GET /chat HTTP/1.1" 200 -
+127.0.0.1 - - [12/Apr/2026 11:38:12] "GET / HTTP/1.1" 200 -
+Loading Qwen model...
+Traceback (most recent call last):
+  File "/home/franciscokaleb/Documents/python/app.py", line 11, in <module>
+    load_model()
+  File "/home/franciscokaleb/Documents/python/qwenchatbotapi.py", line 14, in load_model
+    llm = Llama(
+  File "/home/franciscokaleb/.local/lib/python3.10/site-packages/llama_cpp/llama.py", line 381, in __init__
+    internals.LlamaModel(
+  File "/home/franciscokaleb/.local/lib/python3.10/site-packages/llama_cpp/_internals.py", line 59, in __init__
+    raise ValueError(f"Failed to load model from file: {path_model}")
+ValueError: Failed to load model from file: ./models/qwen2.5-14b/Qwen2.5-14B-Instruct-Q4_K_M.gguf
+Exception ignored in: <function LlamaModel.__del__ at 0x7601475a01f0>
+Traceback (most recent call last):
+  File "/home/franciscokaleb/.local/lib/python3.10/site-packages/llama_cpp/_internals.py", line 87, in __del__
+    self.close()
+  File "/home/franciscokaleb/.local/lib/python3.10/site-packages/llama_cpp/_internals.py", line 79, in close
+    if self.sampler is not None:
+AttributeError: 'LlamaModel' object has no attribute 'sampler'
+127.0.0.1 - - [12/Apr/2026 11:38:13] "GET /about HTTP/1.1" 200 -
+127.0.0.1 - - [12/Apr/2026 11:38:14] "GET /help HTTP/1.1" 200 -
+127.0.0.1 - - [12/Apr/2026 11:38:15] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [12/Apr/2026 11:38:16] "GET /chat HTTP/1.1" 200 -
+127.0.0.1 - - [12/Apr/2026 12:11:36] "GET /admin/serverConfig.json HTTP/1.1" 404 -
+127.0.0.1 - - [12/Apr/2026 12:11:41] "GET /admin/serverConfig.json HTTP/1.1" 404 -
+127.0.0.1 - - [12/Apr/2026 12:15:17] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [12/Apr/2026 12:18:25] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [12/Apr/2026 12:18:26] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [12/Apr/2026 12:25:00] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [12/Apr/2026 12:25:01] "GET / HTTP/1.1" 200 -
